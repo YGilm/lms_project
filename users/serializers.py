@@ -15,3 +15,4 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'phone', 'city', 'avatar', 'payment_history']
 
+
