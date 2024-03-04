@@ -1,17 +1,12 @@
-from rest_framework.serializers import ValidationError
+from rest_framework.exceptions import ValidationError
 
 
 class LinkValidator:
-    """Проверяем вхождения сторонних ссылок в поля"""
-
-    def __init__(self, allowed_domain):
-        if not allowed_domain:
-            raise ValueError("Необходимо указать домен для валидации")
-        self.allowed_domain = allowed_domain
+    def __init__(self, allowed_domains=None):
+        if allowed_domains is None:
+            allowed_domains = ['https://www.youtube.com/']
+        self.allowed_domains = allowed_domains
 
     def __call__(self, value):
-        if not value:
-            return
-
-        if isinstance(value, str) and self.allowed_domain not in value:
-            raise ValidationError(f"Ссылка должна принадлежать домену {self.allowed_domain}")
+        if not any(domain in value for domain in self.allowed_domains):
+            raise ValidationError('Запрещено использовать ссылки на ресурсы, кроме разрешенных доменов.')
