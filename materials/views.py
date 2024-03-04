@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -6,9 +5,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from materials.models import Course, Lesson
-from materials.permissions import IsModeratorOrReadOnly, IsOwnerOrModerator
+from materials.permissions import IsOwnerOrModerator
 from materials.serializers import CourseSerializer, LessonSerializer
+
 from .paginators import CoursePaginator
+from .models import Subscription
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -65,9 +66,6 @@ class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [permissions.IsAdminUser]
-
-
-from .models import Subscription
 
 
 class SubscriptionAPIView(APIView):

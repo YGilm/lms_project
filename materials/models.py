@@ -1,5 +1,4 @@
 from django.db import models
-
 from config import settings
 
 NULLABLE = {'null': True, 'blank': True}
