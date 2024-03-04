@@ -1,15 +1,14 @@
-from django.views import generic
 from rest_framework import serializers, generics
-
 from materials.models import *
 from materials.validators import LinkValidator
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    video_url = serializers.URLField(validators=[LinkValidator()])
+
     class Meta:
         model = Lesson
         fields = '__all__'
-        validators = [LinkValidator(allowed_domain='youtube.com')]
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -29,4 +28,3 @@ class CourseSerializer(serializers.ModelSerializer):
         if user.is_anonymous:
             return False
         return Subscription.objects.filter(user=user, course=instance).exists()
-

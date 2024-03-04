@@ -30,7 +30,8 @@ class LessonTest(TestCase):
         data = {
             'title': 'New Lesson',
             'description': 'New Lesson Description',
-            'course': self.course.id
+            'course': self.course.id,
+            'video_url': 'https://www.youtube.com/75757',
         }
         response = self.client.post('/materials/lesson/create/', data, format='json')
         self.assertEqual(response.status_code, 201)
@@ -45,7 +46,8 @@ class LessonTest(TestCase):
         data = {
             'title': 'Updated Lesson',
             'description': 'Updated Lesson Description',
-            'course': self.course.id
+            'course': self.course.id,
+            'video_url': 'https://www.youtube.com/989987',
         }
         response = self.client.put(f'/materials/lesson/{self.lesson.id}/update/', data, format='json')
         self.assertEqual(response.status_code, 200)
