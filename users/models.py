@@ -27,7 +27,10 @@ class Payment(models.Model):
     course_paid = models.ForeignKey(Course, on_delete=models.SET_NULL, **NULLABLE, verbose_name='оплаченный курс')
     lesson_paid = models.ForeignKey(Lesson, on_delete=models.SET_NULL, **NULLABLE, verbose_name='оплаченный урок')
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='сумма оплаты')
-    payment_method = models.CharField(default='card', max_length=20, choices=PAYMENT_METHOD, )
+    payment_method = models.CharField(default='card', max_length=20, choices=PAYMENT_METHOD,
+                                      verbose_name='способ оплаты')
+    id_stripe_session = models.CharField(max_length=100, null=True, blank=True, verbose_name='id сессии stripe')
+    is_succeed = models.BooleanField(default=False, verbose_name='оплата завершена')
 
     def __str__(self):
         return f'{self.id} плательщик: {self.user} сумма: {self.amount}'
