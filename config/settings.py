@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'django_filters',
+    'drf_yasg',
 
     'users',
     'materials',
@@ -153,3 +154,10 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+
+# Payments stripe.com
+STRIPE_SECRET_KEY = os.getenv('SECRET_KEY_STRIPE')
+# PRODUCT_URL = os.getenv('PRODUCT_URL')
+# PRICE_URL = os.getenv('PRICE_URL')
+# SESSION_URL = os.getenv('SESSION_URL')
+# HEADERS = {"Authorization": f"Bearer {SECRET_KEY_STRIPE}"}
