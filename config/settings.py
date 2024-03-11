@@ -156,7 +156,7 @@ SIMPLE_JWT = {
 }
 
 # Payments stripe.com
-STRIPE_SECRET_KEY = os.getenv('SECRET_KEY_STRIPE')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 # PRODUCT_URL = os.getenv('PRODUCT_URL')
 # PRICE_URL = os.getenv('PRICE_URL')
 # SESSION_URL = os.getenv('SESSION_URL')
