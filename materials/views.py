@@ -1,15 +1,20 @@
+import stripe
 from rest_framework import viewsets, generics, permissions
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from config import settings
 from materials.models import Course, Lesson
 from materials.permissions import IsOwnerOrModerator
 from materials.serializers import CourseSerializer, LessonSerializer
 
 from .paginators import CoursePaginator
 from .models import Subscription
+from users.stripe_services import StripeService
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -18,7 +23,13 @@ class CourseViewSet(viewsets.ModelViewSet):
     pagination_class = CoursePaginator
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        course = serializer.save(owner=self.request.user)
+        stripe_product = StripeService.create_stripe_product(name=course.title, description=course.description)
+        course.stripe_id = stripe_product['id']
+        stripe_price = StripeService.create_stripe_price(product_id=stripe_product['id'],
+                                                         unit_amount=course.price * 100)
+        course.stripe_price_id = stripe_price['id']
+        course.save()
 
     def get_permissions(self):
         if self.action == 'create':
@@ -40,7 +51,12 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        lesson = serializer.save(owner=self.request.user)
+        stripe_product = StripeService.create_stripe_product(name=lesson.title, description=lesson.description)
+        lesson.stripe_id = stripe_product['id']
+        stripe_price = StripeService.create_stripe_price(product_id=stripe_product['id'],
+                                                         unit_amount=lesson.price * 100)
+        lesson.save()
 
 
 class LessonListAPIView(generics.ListAPIView):

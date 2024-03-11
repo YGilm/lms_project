@@ -7,6 +7,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class StripeService:
     @staticmethod
     def create_stripe_product(name, description=None):
+        print("Using Stripe API Key:", stripe.api_key)
+        if stripe.api_key is None:
+            print('key is not found')
         product = stripe.Product.create(
             name=name,
             description=description,

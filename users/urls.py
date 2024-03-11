@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 from users.apps import UsersConfig
-from users.views import UserViewSet, PaymentListAPIView, CreateUserView, PaymentStatusAPIView
+from users.views import UserViewSet, PaymentListAPIView, CreateUserView, PaymentStatusAPIView, \
+    CreatePaymentSessionAPIView
 
 app_name = UsersConfig.name
 
@@ -15,6 +16,7 @@ urlpatterns = [
 
     # Payment
     path('payment/', PaymentListAPIView.as_view(), name='платежи'),
+    path('create-payment-session/', CreatePaymentSessionAPIView.as_view(), name='create-payment-session'),
     path('payment-status/<str:session_id>/', PaymentStatusAPIView.as_view(), name='статус-платежа'),
 
     # API Token

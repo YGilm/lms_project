@@ -9,6 +9,10 @@ class Course(models.Model):
     image = models.ImageField(upload_to='materials/', verbose_name='изображение', **NULLABLE)
     description = models.TextField(verbose_name='описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='courses', **NULLABLE)
+    price = models.PositiveIntegerField(default=0, verbose_name='цена')
+    stripe_price_id = models.CharField(max_length=100, null=True, blank=True, verbose_name='id цены в stripe')
+    stripe_id = models.CharField(max_length=50, verbose_name='id продукта на stripe.com', **NULLABLE)
+    last_update = models.DateTimeField(auto_now=True, verbose_name='последнее обновление')
 
     def __str__(self):
         return f'{self.title}'
@@ -25,6 +29,10 @@ class Lesson(models.Model):
     image = models.ImageField(upload_to='materials/', verbose_name='изображение', **NULLABLE)
     video_url = models.URLField(verbose_name='ссылка на видео', **NULLABLE)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='lessons', **NULLABLE)
+    price = models.PositiveIntegerField(default=0, verbose_name='цена')
+    stripe_price_id = models.CharField(max_length=100, verbose_name='id цены в stripe', **NULLABLE)
+    stripe_id = models.CharField(max_length=50, verbose_name='id продукта на stripe.com', **NULLABLE)
+    last_update = models.DateTimeField(auto_now=True, verbose_name='последнее обновление')
 
     def __str__(self):
         return f'{self.title}'
