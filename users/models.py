@@ -30,6 +30,7 @@ class Payment(models.Model):
     payment_method = models.CharField(default='card', max_length=20, choices=PAYMENT_METHOD,
                                       verbose_name='способ оплаты')
     id_stripe_session = models.CharField(max_length=100, null=True, blank=True, verbose_name='id сессии stripe')
+    payment_url = models.URLField(max_length=500, **NULLABLE, verbose_name='ссылка на оплату')
     is_succeed = models.BooleanField(default=False, verbose_name='оплата завершена')
 
     def __str__(self):

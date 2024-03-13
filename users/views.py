@@ -47,6 +47,7 @@ class CreatePaymentSessionAPIView(APIView):
                 amount=course.price,
                 id_stripe_session=session['id'],
                 payment_method='card',  # Или другой метод
+                payment_url=session['url'],
             )
 
             return Response({"session_url": session.url})
