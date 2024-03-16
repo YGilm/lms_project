@@ -13,6 +13,8 @@ from materials.serializers import CourseSerializer, LessonSerializer
 from .paginators import CoursePaginator
 from .models import Subscription
 from users.stripe_services import StripeService
+from materials.tasks import send_update_email
+
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -43,6 +45,10 @@ class CourseViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        send_update_email.delay(serializer.instance.pk, 'course')
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -76,6 +82,10 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsOwnerOrModerator]
+
+    def perform_update(self, serializer):
+        super().perform_update(serializer)
+        send_update_email.delay(serializer.instance.pk, 'lesson')
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
