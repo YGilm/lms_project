@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from datetime import timedelta
 
+from celery.schedules import crontab
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'drf_yasg',
+    'django_celery_beat',
 
     'users',
     'materials',
@@ -116,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -161,3 +163,25 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 # PRICE_URL = os.getenv('PRICE_URL')
 # SESSION_URL = os.getenv('SESSION_URL')
 # HEADERS = {"Authorization": f"Bearer {SECRET_KEY_STRIPE}"}
+
+# Настройки для Celery
+
+# URL-адрес брокера сообщений
+CELERY_BROKER_URL = 'redis://localhost:6379'  # Redis
+# URL-адрес брокера результатов, также Redis
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# Часовой пояс для работы Celery
+CELERY_TIMEZONE = 'Europe/Moscow'
+# Флаг отслеживания выполнения задач
+CELERY_TASK_TRACK_STARTED = True
+# Максимальное время на выполнение задачи
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CELERY_BEAT_SCHEDULE = {
+    'deactivate_inactive_users': {
+        'task': 'users.tasks.deactivate_inactive_users',
+        'schedule': crontab(hour=19, minute=56),
+    },
+}
