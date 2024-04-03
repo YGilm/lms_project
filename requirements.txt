@@ -1,9 +1,9 @@
 asgiref==3.7.2
 asttokens==2.4.1
 decorator==5.1.1
-Django==5.0.2
+Django
 executing==2.0.1
-ipython==8.21.0
+ipython
 jedi==0.19.1
 matplotlib-inline==0.1.6
 parso==0.8.3
@@ -27,5 +27,6 @@ coverage==7.4.3
 drf-yasg==1.21.7
 stripe==8.6.0
 django-celery-beat==2.6.0
+django-cors-headers==3.10.0
 celery==5.3.6
-redis==7.2.4
+redis
