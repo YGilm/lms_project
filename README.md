@@ -19,9 +19,10 @@ Docker
 Docker Compose
 Инструкция по запуску:
 
-Клонирование репозитория
+Клонирование репозитория:
 
 git clone https://github.com/YGilm/lms_project.git
+
 cd lms_project
 
 Настройка переменных окружения
@@ -36,7 +37,8 @@ docker-compose up --build
 
 docker-compose exec app python manage.py migrate
 
-Создание суперпользователя
+Создание суперпользователя:
+
 docker-compose exec app python manage.py createsuperuser
 
 Использование:
